@@ -2,25 +2,38 @@ package com.dictionaryapp.model.entity;
 
 import jakarta.persistence.*;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="languages")
 public class Language extends BaseEntity {
-    @Column(unique = true, nullable = false)
-    private String languageName;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private LanguageEnum languageName;
 
     @Column(nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "language", cascade = CascadeType.ALL)
-    private List<Word> words;
+    @OneToMany(mappedBy = "language")
+    private Set<Word> words;
 
-    public String getLanguageName() {
+    public Language() {
+        this.words = new HashSet<>();
+
+    }
+
+    public Language(LanguageEnum name, String description) {
+        super();
+
+        this.languageName = name;
+        this.description = description;
+    }
+    public LanguageEnum getLanguageName() {
         return languageName;
     }
 
-    public void setLanguageName(String languageName) {
+    public void setLanguageName(LanguageEnum languageName) {
         this.languageName = languageName;
     }
 
@@ -32,11 +45,12 @@ public class Language extends BaseEntity {
         this.description = description;
     }
 
-    public List<Word> getWords() {
+    public Set<Word> getWords() {
         return words;
     }
 
-    public void setWords(List<Word> words) {
+    public void setWords(Set<Word> words) {
         this.words = words;
     }
+
 }

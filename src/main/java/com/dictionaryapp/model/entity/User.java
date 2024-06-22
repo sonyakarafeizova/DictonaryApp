@@ -2,24 +2,27 @@ package com.dictionaryapp.model.entity;
 
 import jakarta.persistence.*;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="users")
 public class User extends BaseEntity {
 
-    @Column(unique = true, nullable = false, length = 20)
+    @Column(unique = true, nullable = false)
     private String username;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     private String password;
 
     @Column(unique = true, nullable = false)
     private String email;
 
-    @OneToMany(mappedBy = "addedBy", cascade = CascadeType.ALL)
-    private List<Word> addedWords;
-
+    @OneToMany(mappedBy = "addedBy")
+    private Set<Word> addedWords;
+    public User() {
+        addedWords = new HashSet<>();
+    }
     public String getUsername() {
         return username;
     }
@@ -44,11 +47,11 @@ public class User extends BaseEntity {
         this.email = email;
     }
 
-    public List<Word> getAddedWords() {
+    public Set<Word> getAddedWords() {
         return addedWords;
     }
 
-    public void setAddedWords(List<Word> addedWords) {
+    public void setAddedWords(Set<Word> addedWords) {
         this.addedWords = addedWords;
     }
 }
